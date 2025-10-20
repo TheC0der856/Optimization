@@ -1,6 +1,6 @@
 # my folders to ignore:
-data/
-results/
+data/*
+results/*
 
 
 # R recommendend file sto ignore by git:
