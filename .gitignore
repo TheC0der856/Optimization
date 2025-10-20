@@ -1,7 +1,7 @@
 # my folders to ignore:
 data/*
 results/*
-
+*.Rproj
 
 # R recommendend file sto ignore by git:
 .Rhistory
