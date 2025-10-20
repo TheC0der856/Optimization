@@ -1,6 +1,6 @@
 # Function to create bootstrapped subsamples from a genind object
 
-bootstrap_genind <- function(genind_obj, ID_limit = 10, n_bootstraps = NULL) {
+bootstrap_genind <- function(genind_obj, ID_limit = 10, n_bootstraps = 1) {
 
   potential_KBAs <- levels(genind_obj@pop)
   KBAs_enough_IDs <- potential_KBAs[table(genind_obj@pop) >= ID_limit]
