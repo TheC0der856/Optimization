@@ -1,0 +1,12 @@
+library(sf)
+library(dplyr)
+library(tmap)
+library(lwgeom) # für st_split
+#load libraries
+library(dplyr)
+library(sf)
+library(adegenet) #genind, etc.
+library(vegan)    #Delta+
+library(poppr)    #bitwise.dist()
+library(foreach)
+library(doParallel)
