@@ -18,34 +18,32 @@ invisible(sapply(list.files("code/functions", pattern = "\\.R$", full.names = TR
 # bootstrap the data set, to avoid sampling bias
 bootstrapped_genind_list <- bootstrap_genind(genetic_info, ID_limit = 10, n_bootstraps = 10)
 
+start_time <- Sys.time() # to measure the time, when not on cluster
 
-start_time <- Sys.time()
-
-# prepare cluster
-n_cores <- 3
-cl <- makeCluster(n_cores)
-registerDoParallel(cl)
-
-# parallelize EDplus calculation for all bootstraped data sets
-all_EDplus_results <- foreach(boots_genind = bootstrapped_genind_list,
-                              .packages = c("adegenet", "data.table", "vegan", "poppr")) %dopar% {
-                                # split every bootstrapped data set for each potential KBA
-                                KBAs <- levels(boots_genind@pop)
-                                genind_list <- lapply(KBAs, function(p) boots_genind[boots_genind@pop == p])
-                                names(genind_list) <- KBAs
-                                
-                                # create threshold
-                                threshold <- sum(nAll(boots_genind)) * 0.9
-                                
-                                # calculate EDplus for each combination
-                                EDplus_for_KBAcombinations(genind_list, threshold)
-                              }
-
-# stop cluster
-stopCluster(cl)
-
-
-head(all_EDplus_results[[10]], 10)
+# calculate EDplus for all bootstrapped genetic data
+all_EDplus_results <- EDplus_after_bootstrapping(bootstrapped_genind_list, 
+                                                 threshold_factor = 0.9,
+                                                 n_cores = 3)
 
 end_time <- Sys.time()
 end_time - start_time
+
+# analyse results:
+
+all_EDplus_results <- lapply(all_EDplus_results, as.data.table)
+combined <- rbindlist(all_EDplus_results, use.names = TRUE, fill = TRUE)
+
+summary_EDplus <- combined[, .(
+  n_boot = .N,
+  mean_EDplus = mean(EDplus, na.rm = TRUE),
+  median_EDplus = median(EDplus, na.rm = TRUE),
+  sd_EDplus = sd(EDplus, na.rm = TRUE),
+  max_EDplus = max(EDplus, na.rm = TRUE),
+  CI_lower = quantile(EDplus, 0.025),   
+  CI_upper = quantile(EDplus, 0.975)
+), by = areaS]
+
+summary_EDplus <- summary_EDplus[order( -n_boot, -mean_EDplus)]
+
+write.csv(summary_EDplus, "results/summary_EDplus20boot.csv")
+
