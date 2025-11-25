@@ -18,10 +18,10 @@ estimatedEDplus <- estimatedEDplus %>%
 
 # combine tables
 CV_table <- bind_rows(observedEDplus, estimatedEDplus) %>%
-  select(KBAs, Type, mean_EDplus, sd_EDplus, Coefficient_of_Variation)
+  select(KBA, Type, mean_EDplus, sd_EDplus, Coefficient_of_Variation)
 
 # plot results
-ggplot(CV_table, aes(x = KBAs, y = Coefficient_of_Variation)) +
+ggplot(CV_table, aes(x = KBA, y = Coefficient_of_Variation)) +
   geom_col(data = subset(CV_table, Type == "Estimated"),
            aes(fill = Type), width = 0.6) +
   geom_col(data = subset(CV_table, Type == "Observed"),

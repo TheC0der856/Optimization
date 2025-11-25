@@ -36,8 +36,8 @@ cols <- c("n_boot",         # only relevant to calculate how often the combinati
           "CI_lower25_5",
           "CI_upper97_5")
 best_cutoff_means <- rbind(
-  data.frame(KBAs = best_cutoff5, t(colMeans(best5_df[cols], na.rm = TRUE))),
-  data.frame(KBAs = best_cutoff25, t(colMeans(best25_df[cols], na.rm = TRUE)))
+  data.frame(KBA = best_cutoff5, t(colMeans(best5_df[cols], na.rm = TRUE))),
+  data.frame(KBA = best_cutoff25, t(colMeans(best25_df[cols], na.rm = TRUE)))
 )
 
 write.csv(best_cutoff_means, "results/test_stable_top_combination/threshold_EDplus.csv")

@@ -9,17 +9,17 @@ estimatedEDplus <- read.csv("results/test_stable_top_combination/no_threshold_ED
 ggplot() +
   # estimated
   geom_point(data = estimatedEDplus,
-             aes(x = KBAs, y = mean_EDplus),
+             aes(x = KBA, y = mean_EDplus),
              size = 4, color = "grey") + 
   geom_errorbar(data = estimatedEDplus,
                 aes(x = KBA, ymin = CI_lower25_5, ymax = CI_upper97_5),
                 width = 0.1, color = "grey", size = 1, linetype = "dashed") +
   # observed
   geom_point(data = observedEDplus,
-             aes(x = KBAs, y = mean_EDplus),
+             aes(x = KBA, y = mean_EDplus),
              size = 4, color = "black") +
   geom_errorbar(data = observedEDplus,
-                aes(x = KBAs, ymin = CI_lower25_5, ymax = CI_upper97_5),
+                aes(x = KBA, ymin = CI_lower25_5, ymax = CI_upper97_5),
                 width = 0.1, color = "black", size = 1) +
   labs(
     x = "KBAs",

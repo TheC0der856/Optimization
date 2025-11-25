@@ -1,5 +1,6 @@
 library(tmap)
 
+
 # preparations:
 source("code/preparation/load_libraries.R")                  # load libraries
 source("code/preparation/load_genind_with_potentialKBAs.R")  # load data set
@@ -29,6 +30,9 @@ potential_KBAs <- potential_KBAs %>%
     nummer = ifelse(fill_color %in% c("genetics_available", "over9individuals"),
                     n_individuals, NA)   # Zahl in die Karte
   )
+
+# save
+write_sf(potential_KBAs, "results/individuals_per_area.shp")
 
 # create the map
 tm_shape(potential_KBAs) +
